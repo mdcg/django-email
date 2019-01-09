@@ -4,7 +4,7 @@ from django.views import View
 
 class RegistrationView(View):
     def get(self, request):
-        pass
+        return render(request, "core/registration.html", {})
 
     def post(self, request):
         pass
