@@ -3,22 +3,27 @@
 <div class="row">
     <div class="col-md-6">
         <h1>Super Example!</h1>
-        <form>
+        <form method="POST">
+            {% csrf_token %}
             <div class="form-group">
                 <label>First Name</label>
-                <input type="text" class="form-control">
+                {{form.first_name}}
             </div>
             <div class="form-group">
                 <label>Last Name</label>
-                <input type="text" class="form-control">
+                {{form.last_name}}
             </div>
             <div class="form-group">
                 <label>E-mail</label>
-                <input type="text" class="form-control">
+                {{form.email}}
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                {{form.username}}
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="text" class="form-control">
+                {{form.password}}
             </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Submit</button>
         </form>
