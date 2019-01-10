@@ -9,6 +9,8 @@ from django.views import View
 from core.forms import UserForm
 from core.models import ConfirmationToken
 
+from .tasks import send_confirmation_email
+
 
 class RegistrationView(View):
     def get(self, request):
@@ -23,9 +25,15 @@ class RegistrationView(View):
 
         if user_form.is_valid():
             user = user_form.save()
-            ConfirmationToken.objects.create(
+            confirmation_token = ConfirmationToken.objects.create(
                 user=user,
                 confirmation_key=secrets.token_hex(16)
+            )
+
+            send_confirmation_email.delay(
+                confirmation_token.confirmation_key,
+                user.id,
+                user.email,
             )
 
             messages.success(request, 'Usuário cadastrado com sucesso.')
