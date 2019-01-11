@@ -30,6 +30,7 @@ class RegistrationView(View):
                 confirmation_key=secrets.token_hex(16)
             )
 
+            # Empilhando a task
             send_confirmation_email.delay(
                 confirmation_token.confirmation_key,
                 user.id,
