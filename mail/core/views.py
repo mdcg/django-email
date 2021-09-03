@@ -26,8 +26,7 @@ class RegistrationView(View):
         if user_form.is_valid():
             user = user_form.save()
             confirmation_token = ConfirmationToken.objects.create(
-                user=user,
-                confirmation_key=secrets.token_hex(16)
+                user=user, confirmation_key=secrets.token_hex(16)
             )
 
             # Empilhando a task
@@ -37,12 +36,13 @@ class RegistrationView(View):
                 user.email,
             )
 
-            messages.success(request, 'Usuário cadastrado com sucesso.')
+            messages.success(request, "Usuário cadastrado com sucesso.")
 
-            return redirect('registration')
+            return redirect("registration")
 
         messages.warning(
-            request, 'Verifique todos os dados antes de prosseguir.')
+            request, "Verifique todos os dados antes de prosseguir."
+        )
 
         context = {
             "form": user_form,
@@ -58,23 +58,21 @@ class ConfirmRegistrationView(View):
         try:
             user = User.objects.get(id=user_id)
         except ObjectDoesNotExist:
-            messages.warning(
-                request, 'Usuário não cadastrado.')
-            return redirect('registration')
+            messages.warning(request, "Usuário não cadastrado.")
+            return redirect("registration")
 
         if user.confirmation_token.is_confirmed:
-            messages.warning(
-                request, 'Cadastro do usuário já foi confirmado.')
-            return redirect('registration')
+            messages.warning(request, "Cadastro do usuário já foi confirmado.")
+            return redirect("registration")
 
         if user.confirmation_token.confirmation_key == confirmation_key:
             user.confirmation_token.is_confirmed = True
             user.confirmation_token.save()
 
             messages.success(
-                request, 'Cadastro do usuário confirmado com sucesso.')
+                request, "Cadastro do usuário confirmado com sucesso."
+            )
         else:
-            messages.warning(
-                request, 'Chave de confirmação inválida.')
+            messages.warning(request, "Chave de confirmação inválida.")
 
-        return redirect('registration')
+        return redirect("registration")

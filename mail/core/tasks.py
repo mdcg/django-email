@@ -9,11 +9,13 @@ logger = get_task_logger(__name__)
 
 @app.task(name="send_confirmation_email_task")
 def send_confirmation_email(token, id, email):
-    logger.info('Creating the task..')
+    logger.info("Creating the task..")
 
-    subject = 'Obrigado por se cadastrar!'
+    subject = "Obrigado por se cadastrar!"
     from_email = settings.EMAIL_HOST_USER
-    message = f"http://localhost:8000/confirm/?confirmation_key={token}&id={id}"
+    message = (
+        f"http://localhost:8000/confirm/?confirmation_key={token}&id={id}"
+    )
     to = email
 
     send_mail(
@@ -24,4 +26,4 @@ def send_confirmation_email(token, id, email):
         fail_silently=False,
     )
 
-    logger.info('Finishing task..')
+    logger.info("Finishing task..")
